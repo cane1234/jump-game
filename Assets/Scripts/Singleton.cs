@@ -15,7 +15,7 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
     }
 
     #region Unity Methods
-    private void Awake()
+    protected void Awake()
     {
         if (instance == null)
         {
@@ -27,7 +27,7 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
         }
     }
 
-    private void OnDestroy()
+    void OnDestroy()
     {
         if(instance == this)
         {

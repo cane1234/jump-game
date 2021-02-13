@@ -1,0 +1,11 @@
+4 scenes
+-mainmenu, gamescene, endgamescene, highscores
+game features
+-doodle jump
+-auto generating steps
+-camera movement
+-points system
+-checkpoint step on fixed height
+-wall bounce
+-physics / combo jumps tbd
+-art / animation / music tbd

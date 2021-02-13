@@ -5,6 +5,7 @@ public class MainMenuButtonManager : MonoBehaviour
 {
     public Button StartGameButton;
     public Button QuitGameButton;
+    public Button HighScoresButton;
 
     #region Unity Methods
     // Start is called before the first frame update
@@ -30,6 +31,11 @@ public class MainMenuButtonManager : MonoBehaviour
         LevelManager.Instance.QuitGame();
     }
 
+    private void HighScoresButtonPressed()
+    {
+        LevelManager.Instance.HighScores();
+    }
+
     #endregion
 
     #region Helper Funtions
@@ -38,12 +44,14 @@ public class MainMenuButtonManager : MonoBehaviour
     {
         StartGameButton.onClick.AddListener(StartGameButtonPressed);
         QuitGameButton.onClick.AddListener(QuitGameButtonPressed);
+        HighScoresButton.onClick.AddListener(HighScoresButtonPressed);
     }
 
     private void UnregisterEvents()
     {
         StartGameButton.onClick.RemoveAllListeners();
         QuitGameButton.onClick.RemoveAllListeners();
+        HighScoresButton.onClick.RemoveAllListeners();
     }
 
     #endregion

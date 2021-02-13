@@ -5,8 +5,11 @@ public class LevelManager : Singleton<LevelManager>
 {
     #region Level Names
 
+    private const string gameEntryLevelName = "GameEntry";
     private const string mainMenuLevelName = "MainMenu";
     private const string levelOneName = "Level1";
+    private const string highScoresLevelName = "HighScores";
+    private const string endGameLevelname = "EndGame";
 
     #endregion
 
@@ -20,10 +23,10 @@ public class LevelManager : Singleton<LevelManager>
     // Start is called before the first frame update
     void Start()
     {
-        currentLevelName = mainMenuLevelName;
         DontDestroyOnLoad(this.gameObject);
-
-        Debug.Log("Level Manager: Started. Current level: " + mainMenuLevelName);
+        currentLevelName = gameEntryLevelName;
+        Debug.Log("Level Manager: Started. Current level: " + currentLevelName);
+        LoadLevel(mainMenuLevelName);
     }
 
     #endregion
@@ -48,6 +51,16 @@ public class LevelManager : Singleton<LevelManager>
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public void HighScores()
+    {
+        LoadLevel(highScoresLevelName);
+    }
+
+    public void ToMainMenu()
+    {
+        LoadLevel(mainMenuLevelName);
     }
 
     #endregion
