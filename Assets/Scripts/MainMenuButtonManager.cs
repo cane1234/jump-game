@@ -3,9 +3,13 @@ using UnityEngine.UI;
 
 public class MainMenuButtonManager : MonoBehaviour
 {
+    #region Exposed Fields
+
     public Button StartGameButton;
     public Button QuitGameButton;
     public Button HighScoresButton;
+
+    #endregion
 
     #region Unity Methods
     // Start is called before the first frame update

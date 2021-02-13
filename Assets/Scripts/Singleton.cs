@@ -4,6 +4,7 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
 {
     private static T instance;
 
+    #region Properties
     public static T Instance
     {
         get { return instance; }
@@ -13,6 +14,8 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
     {
         get { return instance != null; }
     }
+
+    #endregion
 
     #region Unity Methods
     protected void Awake()

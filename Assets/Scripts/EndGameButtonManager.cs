@@ -3,8 +3,13 @@ using UnityEngine;
 
 public class EndGameButtonManager : MonoBehaviour
 {
+    #region Exposed Fields
+
     public Button ToMainMenuButton;
 
+    #endregion
+
+    #region Unity Methods
     // Start is called before the first frame update
     void Start()
     {
@@ -16,6 +21,8 @@ public class EndGameButtonManager : MonoBehaviour
     {
         UnregisterEvents();
     }
+
+    #endregion
 
     #region Event Handlers
     private void ToMainMenuButtonPressed()
