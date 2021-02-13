@@ -1,5 +1,5 @@
 4 scenes
--mainmenu, gamescene, endgamescene, highscores
+-gameentry, mainmenu, gamescene, endgamescene, highscores
 game features
 -doodle jump
 -auto generating steps

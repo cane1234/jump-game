@@ -105,12 +105,12 @@ public class PauseMenuButtons : MonoBehaviour
 
     private void ResumeGame()
     {
-        LevelManager.Instance.ResumeGame();
+        BaseGameController.Instance.ResumeGame();
     }
 
     private void PauseGame()
     {
-        LevelManager.Instance.PauseGame();
+        BaseGameController.Instance.PauseGame();
     }
 
     #endregion
