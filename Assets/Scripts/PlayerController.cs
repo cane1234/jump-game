@@ -53,12 +53,14 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            //to be deleted
+            //-------------------------------------
+            // to be deleted
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 Debug.Log("Distance traveled: " + GetDistanceTraveled().ToString());
                 Debug.Log("---------------------------------------------------------");
             }
+            //--------------------------------------
 
         }
     }
@@ -78,6 +80,11 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         currentLogicState = LogicState.Standing;
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        currentLogicState = LogicState.Jumping;
     }
 
     private float GetDistanceTraveled()
