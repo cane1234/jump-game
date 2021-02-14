@@ -6,11 +6,10 @@ public class BaseGameController : Singleton<BaseGameController>
 {
 
     #region Editor Fields
-
     [SerializeField]
     private PlayerController playerController;
 
-
+    public GameObject Floor;
     #endregion
 
     #region Unity methods
@@ -28,9 +27,7 @@ public class BaseGameController : Singleton<BaseGameController>
 
     #endregion
 
-    #region Public Fields
-
-
+    #region Public Methods
     public void PauseGame()
     {
         Time.timeScale = 0;

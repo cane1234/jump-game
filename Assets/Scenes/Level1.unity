@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerController: {fileID: 1469317714}
+  Floor: {fileID: 1750555620}
 --- !u!4 &128206654
 Transform:
   m_ObjectHideFlags: 0

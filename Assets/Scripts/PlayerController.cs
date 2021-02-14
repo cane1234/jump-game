@@ -52,13 +52,20 @@ public class PlayerController : MonoBehaviour
                     currentLogicState = LogicState.Jumping;
                 }
             }
+
+            //to be deleted
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                Debug.Log("Distance traveled: " + GetDistanceTraveled().ToString());
+                Debug.Log("---------------------------------------------------------");
+            }
+
         }
     }
 
     #endregion
 
     #region Public methods
-
     public bool PlayerInputEnabled
     {
         get { return playerInputEnabled; }
@@ -71,6 +78,17 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         currentLogicState = LogicState.Standing;
+    }
+
+    private float GetDistanceTraveled()
+    {
+        Bounds playerBounds = this.gameObject.GetComponent<BoxCollider2D>().bounds;
+        float playerBottom = playerBounds.center.y - playerBounds.extents.y;
+
+        Bounds floorBounds = BaseGameController.Instance.Floor.GetComponent<BoxCollider2D>().bounds;
+        float floorTop = floorBounds.center.y + floorBounds.extents.y;
+
+        return playerBottom - floorTop;
     }
     #endregion
 }
