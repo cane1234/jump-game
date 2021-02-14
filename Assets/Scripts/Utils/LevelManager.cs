@@ -16,7 +16,7 @@ public class LevelManager : Singleton<LevelManager>
     #region Private Fields
 
     private string currentLevelName;
-    private IntroAnimationController IntroAnimation;
+
     #endregion
 
     #region Unity Methods
@@ -26,11 +26,7 @@ public class LevelManager : Singleton<LevelManager>
         DontDestroyOnLoad(this.gameObject);
         currentLevelName = gameEntryLevelName;
         Debug.Log("Level Manager: Started. Current level: " + currentLevelName);
-
-        IntroAnimation = FindObjectOfType<IntroAnimationController>();
-        IntroAnimation.IntroAnimationCompleteEvent.AddListener(OnIntroAnimationComplete);
-
-        //LoadLevel(mainMenuLevelName);
+        LoadLevel(mainMenuLevelName);
     }
 
     #endregion
@@ -42,13 +38,6 @@ public class LevelManager : Singleton<LevelManager>
         currentLevelName = levelName;
 
         Debug.Log("Level Manager: Level loaded: " + currentLevelName);
-    }
-
-    private void OnIntroAnimationComplete()
-    {
-        IntroAnimation.IntroAnimationCompleteEvent.RemoveListener(OnIntroAnimationComplete);
-        IntroAnimation = null;
-        LoadLevel(mainMenuLevelName);
     }
 
     #endregion
