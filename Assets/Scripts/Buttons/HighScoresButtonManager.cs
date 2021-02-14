@@ -3,9 +3,9 @@ using UnityEngine.UI;
 
 public class HighScoresButtonManager : MonoBehaviour
 {
-    #region Exposed Fields
-
-    public Button ToMainMenuButton;
+    #region Editor Fields
+    [SerializeField]
+    private Button ToMainMenuButton;
 
     #endregion
 

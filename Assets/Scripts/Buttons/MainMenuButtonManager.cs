@@ -3,11 +3,15 @@ using UnityEngine.UI;
 
 public class MainMenuButtonManager : MonoBehaviour
 {
-    #region Exposed Fields
+    #region Editor Fields
+    [SerializeField]
+    private Button StartGameButton;
 
-    public Button StartGameButton;
-    public Button QuitGameButton;
-    public Button HighScoresButton;
+    [SerializeField]
+    private Button QuitGameButton;
+
+    [SerializeField]
+    private Button HighScoresButton;
 
     #endregion
 

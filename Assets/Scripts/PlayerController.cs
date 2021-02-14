@@ -8,8 +8,14 @@ public class PlayerController : MonoBehaviour
 
     private bool playerInputEnabled;
     #endregion
-    public float speed;
-    public float jumpForce;
+
+    #region Editor Fields
+    [SerializeField]
+    private float speed;
+
+    [SerializeField]
+    private float jumpForce;
+    #endregion
 
     #region Unity methods
 

@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class EndGameButtonManager : MonoBehaviour
 {
-    #region Exposed Fields
-
-    public Button ToMainMenuButton;
+    #region Editor Fields
+    [SerializeField]
+    private Button ToMainMenuButton;
 
     #endregion
 

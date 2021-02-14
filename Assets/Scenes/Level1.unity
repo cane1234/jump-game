@@ -1001,11 +1001,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1469317713}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 034ccd118c548e94e90397f4132c1acf, type: 3}
+  m_Script: {fileID: 11500000, guid: b69359169e4ded849a9ff0d13a5d98f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 6
-  jumpForce: 2000
+  speed: 7
+  jumpForce: 1500
 --- !u!50 &1469317715
 Rigidbody2D:
   serializedVersion: 4
