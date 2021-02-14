@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rigidBody2D;
 
     private bool playerInputEnabled;
+
+    private LogicState currentLogicState;
     #endregion
 
     #region Editor Fields
@@ -17,6 +19,11 @@ public class PlayerController : MonoBehaviour
     private float jumpForce;
     #endregion
 
+    private enum LogicState
+    {
+        Jumping, Standing
+    }
+
     #region Unity methods
 
     // Start is called before the first frame update
@@ -24,6 +31,7 @@ public class PlayerController : MonoBehaviour
     {
         rigidBody2D = GetComponent<Rigidbody2D>();
         playerInputEnabled = true;
+        currentLogicState = LogicState.Standing;
     }
 
     private void Update()
@@ -36,9 +44,13 @@ public class PlayerController : MonoBehaviour
 
             rigidBody2D.AddForce(movement * speed);
 
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (currentLogicState == LogicState.Standing)
             {
-                rigidBody2D.AddForce(new Vector2(0, jumpForce));
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    rigidBody2D.AddForce(new Vector2(0, jumpForce));
+                    currentLogicState = LogicState.Jumping;
+                }
             }
         }
     }
@@ -55,4 +67,10 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    #region Private Methods
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        currentLogicState = LogicState.Standing;
+    }
+    #endregion
 }
