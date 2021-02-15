@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class BaseGameController : Singleton<BaseGameController>
 {
@@ -14,6 +15,9 @@ public class BaseGameController : Singleton<BaseGameController>
 
     [SerializeField]
     private GameObject stepPrefab;
+
+    [SerializeField]
+    private Text scoreCount;
 
 
     [Space(10)]
@@ -49,7 +53,9 @@ public class BaseGameController : Singleton<BaseGameController>
         get { return stepsClimbed; }
         set { stepsClimbed = value; }
     }
-
+    ///<summary>
+    ///Falling speed of all objects in the scene. 
+    ///</summary>
     public float FallingSpeed
     {
         get { return fallingSpeed; }
@@ -98,15 +104,14 @@ public class BaseGameController : Singleton<BaseGameController>
         float min_y = currentHighestStepPos + spawnStepsMinY;
         float max_y = currentHighestStepPos + spawnStepsMaxY;
 
-        float x = UnityEngine.Random.Range(spawnStepsMinX, spawnStepsMaxX);
-        float y = UnityEngine.Random.Range(min_y, max_y);
+        float x = Random.Range(spawnStepsMinX, spawnStepsMaxX);
+        float y = Random.Range(min_y, max_y);
 
         GameObject newStep = Instantiate(stepPrefab, new Vector3(x, y, 0), Quaternion.identity);
         currentHighestStep = newStep;
     }
 
     #endregion
-
 
     #region Public Methods
     public void PauseGame()
@@ -137,6 +142,12 @@ public class BaseGameController : Singleton<BaseGameController>
         float playerBottom = playerBounds.center.y - playerBounds.extents.y;
 
         return playerBottom;
+    }
+
+    public void IncrementScore()
+    {
+        stepsClimbed++;
+        scoreCount.text = stepsClimbed.ToString();
     }
 
     #endregion

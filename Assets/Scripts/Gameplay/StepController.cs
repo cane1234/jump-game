@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 public class StepController : MonoBehaviour
 {
@@ -6,7 +7,8 @@ public class StepController : MonoBehaviour
 
     private BoxCollider2D boxCollider;
 
-    private bool climbed;
+    private bool isClimbed;
+    private UnityEvent climbed;
 
     #endregion
 
@@ -16,7 +18,10 @@ public class StepController : MonoBehaviour
     {
         boxCollider = GetComponent<BoxCollider2D>();
         boxCollider.enabled = false;
-        climbed = false;
+
+        isClimbed = false;
+        climbed = new UnityEvent();
+        climbed.AddListener(BaseGameController.Instance.IncrementScore);
     }
 
     // Update is called once per frame
@@ -25,10 +30,10 @@ public class StepController : MonoBehaviour
         if(BaseGameController.Instance.GetPlayerY() > GetStepY())
         {
             boxCollider.enabled = true;
-            if (!climbed)
+            if (!isClimbed)
             {
-                climbed = true;
-                BaseGameController.Instance.StepsClimbed ++; 
+                isClimbed = true;
+                climbed.Invoke(); 
             }
         }
         else
