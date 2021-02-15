@@ -40,5 +40,13 @@ public class BaseGameController : Singleton<BaseGameController>
         playerController.PlayerInputEnabled = true;
     }
 
+    public float GetPlayerY()
+    {
+        Bounds playerBounds = playerController.gameObject.GetComponent<BoxCollider2D>().bounds;
+        float playerBottom = playerBounds.center.y - playerBounds.extents.y;
+
+        return playerBottom;
+    }
+
     #endregion
 }
