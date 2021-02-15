@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class StepController : MonoBehaviour
 {
@@ -9,6 +6,7 @@ public class StepController : MonoBehaviour
 
     private BoxCollider2D boxCollider;
 
+    private bool climbed;
     #endregion
 
     #region Unity Methods
@@ -17,6 +15,7 @@ public class StepController : MonoBehaviour
     {
         boxCollider = GetComponent<BoxCollider2D>();
         boxCollider.enabled = false;
+        climbed = false;
     }
 
     // Update is called once per frame
@@ -25,6 +24,11 @@ public class StepController : MonoBehaviour
         if(BaseGameController.Instance.GetPlayerY() > GetStepY())
         {
             boxCollider.enabled = true;
+            if (!climbed)
+            {
+                climbed = true;
+                BaseGameController.Instance.StepsClimbed ++; 
+            }
         }
         else
         {

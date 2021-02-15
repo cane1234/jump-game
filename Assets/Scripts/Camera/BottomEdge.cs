@@ -12,7 +12,7 @@ public class BottomEdge : MonoBehaviour
 
     #region Private Fields
 
-    private EdgeCollider2D edgeCollider;
+    private BoxCollider2D boxCollider;
 
     #endregion
 
@@ -20,8 +20,8 @@ public class BottomEdge : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        edgeCollider = GetComponent<EdgeCollider2D>();
-        edgeCollider.isTrigger = true;
+        boxCollider = GetComponent<BoxCollider2D>();
+        boxCollider.isTrigger = true;
     }
 
     // Update is called once per frame

@@ -1,7 +1,4 @@
-﻿using System;
-using UnityEngine;
-
-
+﻿using UnityEngine;
 
 public class BaseGameController : Singleton<BaseGameController>
 {
@@ -41,11 +38,19 @@ public class BaseGameController : Singleton<BaseGameController>
     {
         get { return floor; }
     }
+
+    public int StepsClimbed
+    {
+        get { return stepsClimbed; }
+        set { stepsClimbed = value; }
+    }
     #endregion
 
     #region Private Fields
 
     private GameObject currentHighestStep;
+
+    private int stepsClimbed;
 
     #endregion
 
@@ -54,6 +59,7 @@ public class BaseGameController : Singleton<BaseGameController>
     void Start()
     {
         currentHighestStep = FindObjectOfType<StepController>().gameObject;
+        stepsClimbed = 0;
     }
 
     // Update is called once per frame
@@ -106,6 +112,7 @@ public class BaseGameController : Singleton<BaseGameController>
 
     public void EndGame()
     {
+        Debug.Log("Steps climbed: " + stepsClimbed + ".");
         LevelManager.Instance.ToEndGame();
     }
 
