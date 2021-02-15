@@ -25,6 +25,10 @@ public class CameraController : MonoBehaviour
         {
             transform.position = smoothedPosition;
         }
+        else
+        {
+            transform.position += new Vector3(0f, Time.deltaTime * BaseGameController.Instance.FallingSpeed , 0f);
+        }
     }
     #endregion
 

@@ -7,6 +7,7 @@ public class StepController : MonoBehaviour
     private BoxCollider2D boxCollider;
 
     private bool climbed;
+
     #endregion
 
     #region Unity Methods

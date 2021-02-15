@@ -251,6 +251,7 @@ MonoBehaviour:
   spawnStepsMaxX: 14
   spawnStepsMinY: 4
   spawnStepsMaxY: 7
+  fallingSpeed: 1
 --- !u!4 &128206654
 Transform:
   m_ObjectHideFlags: 0
@@ -1752,12 +1753,12 @@ PrefabInstance:
     - target: {fileID: 6617908536922920158, guid: 7b9e3b87d5f337e48802164085c0709d,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.34
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6617908536922920158, guid: 7b9e3b87d5f337e48802164085c0709d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.7
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6617908536922920158, guid: 7b9e3b87d5f337e48802164085c0709d,
         type: 3}

@@ -31,6 +31,11 @@ public class BaseGameController : Singleton<BaseGameController>
     [SerializeField]
     private float spawnStepsMaxY;
 
+    [Space(10)]
+    [Header("Difficulty settings")]
+    [SerializeField]
+    private float fallingSpeed;
+
     #endregion
 
     #region Properties
@@ -43,6 +48,12 @@ public class BaseGameController : Singleton<BaseGameController>
     {
         get { return stepsClimbed; }
         set { stepsClimbed = value; }
+    }
+
+    public float FallingSpeed
+    {
+        get { return fallingSpeed; }
+        set { fallingSpeed = value; }
     }
     #endregion
 

@@ -52,16 +52,6 @@ public class PlayerController : MonoBehaviour
                     currentLogicState = LogicState.Jumping;
                 }
             }
-
-            //-------------------------------------
-            // to be deleted
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                Debug.Log("Distance traveled: " + GetDistanceTraveled().ToString());
-                Debug.Log("---------------------------------------------------------");
-            }
-            //--------------------------------------
-
         }
     }
 
@@ -85,21 +75,6 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionExit2D(Collision2D collision)
     {
         currentLogicState = LogicState.Jumping;
-    }
-
-    /// <summary>
-    /// Used to get the distance the player has traveled during the game.
-    /// </summary>
-    /// <returns> The distance from the lowest point of the Player to the highest point of the Floor. </returns>
-    private float GetDistanceTraveled()
-    {
-        Bounds playerBounds = this.gameObject.GetComponent<BoxCollider2D>().bounds;
-        float playerBottom = playerBounds.center.y - playerBounds.extents.y;
-
-        Bounds floorBounds = BaseGameController.Instance.Floor.GetComponent<BoxCollider2D>().bounds;
-        float floorTop = floorBounds.center.y + floorBounds.extents.y;
-
-        return playerBottom - floorTop;
     }
     #endregion
 }
