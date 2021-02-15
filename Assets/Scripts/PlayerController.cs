@@ -41,7 +41,6 @@ public class PlayerController : MonoBehaviour
         if (playerInputEnabled)
         {
             float moveHorizontal = Input.GetAxis("Horizontal");
-
             Vector2 movement = new Vector2(moveHorizontal, 0);
 
             rigidBody2D.AddForce(movement * speed);
@@ -89,6 +88,10 @@ public class PlayerController : MonoBehaviour
         currentLogicState = LogicState.Jumping;
     }
 
+    /// <summary>
+    /// Used to get the distance the player has traveled during the game.
+    /// </summary>
+    /// <returns> The distance from the lowest point of the Player to the highest point of the Floor. </returns>
     private float GetDistanceTraveled()
     {
         Bounds playerBounds = this.gameObject.GetComponent<BoxCollider2D>().bounds;

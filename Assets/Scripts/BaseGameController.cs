@@ -40,6 +40,10 @@ public class BaseGameController : Singleton<BaseGameController>
         playerController.PlayerInputEnabled = true;
     }
 
+    /// <summary>
+    /// Used by steps to calculate if the player is above them, so they can turn on their collider.
+    /// </summary>
+    /// <returns> Returns the y coordinate of the lowest point of the Player gameObject. </returns>
     public float GetPlayerY()
     {
         Bounds playerBounds = playerController.gameObject.GetComponent<BoxCollider2D>().bounds;
