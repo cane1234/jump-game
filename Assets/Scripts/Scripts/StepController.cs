@@ -31,6 +31,10 @@ public class StepController : MonoBehaviour
     #endregion
 
     #region Helper Methods
+    /// <summary>
+    /// Used to check if the player is above this step so it can turn on/off its collider.
+    /// </summary>
+    /// <returns> The Y coordinate of the lowest point of this Step. </returns>
     private float GetStepY()
     {
         Bounds stepBounds = this.gameObject.GetComponent<BoxCollider2D>().bounds;
