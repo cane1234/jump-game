@@ -74,5 +74,10 @@ public class LevelManager : Singleton<LevelManager>
         LoadLevel(mainMenuLevelName);
     }
 
+    public void ToEndGame()
+    {
+        LoadLevel(endGameLevelname);
+    }
+
     #endregion
 }

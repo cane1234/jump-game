@@ -4,12 +4,22 @@ using UnityEngine;
 
 public class BaseGameController : Singleton<BaseGameController>
 {
-
     #region Editor Fields
     [SerializeField]
     private PlayerController playerController;
 
-    public GameObject Floor;
+    [SerializeField]
+    private CameraController cameraController;
+
+    [SerializeField]
+    private GameObject floor;
+    #endregion
+
+    #region Properties
+    public GameObject Floor
+    {
+        get { return floor; }
+    }
     #endregion
 
     #region Unity methods
@@ -38,6 +48,11 @@ public class BaseGameController : Singleton<BaseGameController>
     {
         Time.timeScale = 1;
         playerController.PlayerInputEnabled = true;
+    }
+
+    public void EndGame()
+    {
+        LevelManager.Instance.ToEndGame();
     }
 
     /// <summary>
