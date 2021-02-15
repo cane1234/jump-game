@@ -5,8 +5,11 @@ using UnityEngine;
 
 public class StepController : MonoBehaviour
 {
+    #region Private Fields
 
     private BoxCollider2D boxCollider;
+
+    #endregion
 
     #region Unity Methods
     // Start is called before the first frame update
@@ -30,12 +33,12 @@ public class StepController : MonoBehaviour
     }
     #endregion
 
-    #region Helper Methods
+    #region Public Methods
     /// <summary>
     /// Used to check if the player is above this step so it can turn on/off its collider.
     /// </summary>
     /// <returns> The Y coordinate of the lowest point of this Step. </returns>
-    private float GetStepY()
+    public float GetStepY()
     {
         Bounds stepBounds = this.gameObject.GetComponent<BoxCollider2D>().bounds;
         float stepTop = stepBounds.center.y + stepBounds.extents.y;

@@ -1,6 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
+
+
 
 public class BaseGameController : Singleton<BaseGameController>
 {
@@ -13,6 +14,26 @@ public class BaseGameController : Singleton<BaseGameController>
 
     [SerializeField]
     private GameObject floor;
+
+    [SerializeField]
+    private GameObject stepPrefab;
+
+
+    [Space(10)]
+    [Header("Step spawn values")]
+
+    [SerializeField]
+    private float spawnStepsMinX;
+
+    [SerializeField]
+    private float spawnStepsMaxX;
+
+    [SerializeField]
+    private float spawnStepsMinY;
+
+    [SerializeField]
+    private float spawnStepsMaxY;
+
     #endregion
 
     #region Properties
@@ -22,20 +43,53 @@ public class BaseGameController : Singleton<BaseGameController>
     }
     #endregion
 
+    #region Private Fields
+
+    private GameObject currentHighestStep;
+
+    #endregion
+
     #region Unity methods
     // Start is called before the first frame update
     void Start()
     {
-        
+        currentHighestStep = FindObjectOfType<StepController>().gameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        UpdateSteps();
     }
 
     #endregion
+
+    #region Private Methods
+    private void UpdateSteps()
+    {
+        float currentPlayerPos = GetPlayerY();
+        float currentHighestStepPos = currentHighestStep.GetComponent<StepController>().GetStepY();
+
+        if(currentHighestStepPos - currentPlayerPos < 20)
+        {
+            CreateStep(currentHighestStepPos);
+        }
+    }
+
+    private void CreateStep(float currentHighestStepPos)
+    {
+        float min_y = currentHighestStepPos + spawnStepsMinY;
+        float max_y = currentHighestStepPos + spawnStepsMaxY;
+
+        float x = UnityEngine.Random.Range(spawnStepsMinX, spawnStepsMaxX);
+        float y = UnityEngine.Random.Range(min_y, max_y);
+
+        GameObject newStep = Instantiate(stepPrefab, new Vector3(x, y, 0), Quaternion.identity);
+        currentHighestStep = newStep;
+    }
+
+    #endregion
+
 
     #region Public Methods
     public void PauseGame()
