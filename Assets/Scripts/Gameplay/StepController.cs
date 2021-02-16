@@ -8,7 +8,7 @@ public class StepController : MonoBehaviour
     private BoxCollider2D boxCollider;
 
     private bool isClimbed;
-    private UnityEvent climbed;
+    public UnityEvent climbed;
 
     #endregion
 
@@ -50,7 +50,7 @@ public class StepController : MonoBehaviour
     /// <returns> The Y coordinate of the lowest point of this Step. </returns>
     public float GetStepY()
     {
-        Bounds stepBounds = this.gameObject.GetComponent<BoxCollider2D>().bounds;
+        Bounds stepBounds = boxCollider.bounds;
         float stepTop = stepBounds.center.y + stepBounds.extents.y;
 
         return stepTop;

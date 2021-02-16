@@ -5,8 +5,8 @@ public class BottomEdge : MonoBehaviour
     #region Collision Names
 
     private const string playerName = "Player";
-
     private const string stepName = "Step";
+    private const string wallName = "Wall";
 
     #endregion
 
@@ -45,6 +45,14 @@ public class BottomEdge : MonoBehaviour
         }
     }
 
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.name.Contains(wallName))
+        {
+            Destroy(collision.gameObject);
+        }
+    }
     #endregion
 
 }

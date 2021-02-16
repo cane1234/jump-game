@@ -3,6 +3,11 @@ using UnityEngine.UI;
 
 public class BaseGameController : Singleton<BaseGameController>
 {
+    #region Constants
+    private const int wallCreationThreshold = 20;
+    private const int stepCreationThreshold = 20;
+    #endregion
+
     #region Editor Fields
     [SerializeField]
     private PlayerController playerController;
@@ -17,7 +22,18 @@ public class BaseGameController : Singleton<BaseGameController>
     private GameObject stepPrefab;
 
     [SerializeField]
+    private GameObject wallPrefab;
+
+    [SerializeField]
     private Text scoreCount;
+
+    [Space(10)]
+    [Header("Walls")]
+    [SerializeField]
+    private GameObject currentHighestLeftWall;
+
+    [SerializeField]
+    private GameObject currentHighestRightWall;
 
 
     [Space(10)]
@@ -43,16 +59,6 @@ public class BaseGameController : Singleton<BaseGameController>
     #endregion
 
     #region Properties
-    public GameObject Floor
-    {
-        get { return floor; }
-    }
-
-    public int StepsClimbed
-    {
-        get { return stepsClimbed; }
-        set { stepsClimbed = value; }
-    }
     ///<summary>
     ///Falling speed of all objects in the scene. 
     ///</summary>
@@ -66,6 +72,9 @@ public class BaseGameController : Singleton<BaseGameController>
     #region Private Fields
 
     private GameObject currentHighestStep;
+    private StepController currentHighestStepController;
+
+    private WallController currentHighestLeftWallController;
 
     private int stepsClimbed;
 
@@ -75,7 +84,11 @@ public class BaseGameController : Singleton<BaseGameController>
     // Start is called before the first frame update
     void Start()
     {
-        currentHighestStep = FindObjectOfType<StepController>().gameObject;
+        currentHighestStepController = FindObjectOfType<StepController>();
+        currentHighestStep = currentHighestStepController.gameObject;
+
+        currentHighestLeftWallController = currentHighestLeftWall.GetComponent<WallController>();
+        
         stepsClimbed = 0;
     }
 
@@ -83,17 +96,18 @@ public class BaseGameController : Singleton<BaseGameController>
     void Update()
     {
         UpdateSteps();
+        UpdateWalls();
     }
 
     #endregion
 
-    #region Private Methods
+    #region Step Creation
     private void UpdateSteps()
     {
         float currentPlayerPos = GetPlayerY();
-        float currentHighestStepPos = currentHighestStep.GetComponent<StepController>().GetStepY();
+        float currentHighestStepPos = currentHighestStepController.GetStepY();
 
-        if(currentHighestStepPos - currentPlayerPos < 20)
+        if(currentHighestStepPos - currentPlayerPos < stepCreationThreshold)
         {
             CreateStep(currentHighestStepPos);
         }
@@ -109,11 +123,39 @@ public class BaseGameController : Singleton<BaseGameController>
 
         GameObject newStep = Instantiate(stepPrefab, new Vector3(x, y, 0), Quaternion.identity);
         currentHighestStep = newStep;
+        currentHighestStepController = currentHighestStep.GetComponent<StepController>();
     }
 
     #endregion
 
-    #region Public Methods
+    #region Wall Creation
+    private void UpdateWalls()
+    {
+        float currentPlayerPos = GetPlayerY();
+
+        float currentHighestLeftWallPos = currentHighestLeftWallController.GetWallY();
+        //float currentHighestRightWallPos = currentHighestRightWall.GetComponent<WallController>().GetWallY();
+
+        if(currentHighestLeftWallPos - currentPlayerPos < wallCreationThreshold)
+        {
+            CreateWalls(currentHighestLeftWallPos, currentHighestLeftWall.transform.position.x, currentHighestRightWall.transform.position.x);
+        }
+    }
+
+    private void CreateWalls(float y, float leftX, float rightX)
+    {
+        GameObject newLeftWall = Instantiate(wallPrefab, new Vector3(leftX, y, 0), Quaternion.identity);
+        GameObject newRightWall = Instantiate(wallPrefab, new Vector3(rightX, y, 0), Quaternion.identity);
+
+        currentHighestLeftWallController = newLeftWall.GetComponent<WallController>();
+
+        currentHighestLeftWall = newLeftWall;
+        currentHighestRightWall = newRightWall;
+    }
+
+    #endregion
+
+    #region Pause
     public void PauseGame()
     {
         Time.timeScale = 0;
@@ -125,7 +167,9 @@ public class BaseGameController : Singleton<BaseGameController>
         Time.timeScale = 1;
         playerController.PlayerInputEnabled = true;
     }
+    #endregion
 
+    #region Public Methods
     public void EndGame()
     {
         Debug.Log("Steps climbed: " + stepsClimbed + ".");
