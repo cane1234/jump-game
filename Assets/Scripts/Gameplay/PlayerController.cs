@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
             float moveHorizontal = Input.GetAxis("Horizontal");
             Vector2 movement = new Vector2(moveHorizontal, 0);
 
-            rigidBody2D.AddForce(movement * speed);
+            rigidBody2D.AddForce(movement * speed * Time.deltaTime);
 
             if (currentLogicState == LogicState.Standing)
             {

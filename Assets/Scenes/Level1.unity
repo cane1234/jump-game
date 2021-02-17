@@ -319,13 +319,13 @@ MonoBehaviour:
   wallPrefab: {fileID: 4512973527468720855, guid: 864e09ee3d64ffa458d0b62b2afeae81,
     type: 3}
   scoreCount: {fileID: 2120405422}
+  currentHighestLeftWall: {fileID: 2110809959}
+  currentHighestRightWall: {fileID: 1334411346}
   spawnStepsMinX: -14
   spawnStepsMaxX: 14
   spawnStepsMinY: 4
   spawnStepsMaxY: 7
   fallingSpeed: 1
-  currentHighestLeftWall: {fileID: 2110809959}
-  currentHighestRightWall: {fileID: 1334411346}
 --- !u!4 &128206654
 Transform:
   m_ObjectHideFlags: 0
@@ -1448,7 +1448,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b69359169e4ded849a9ff0d13a5d98f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 7
+  speed: 3000
   jumpForce: 3000
 --- !u!50 &1469317715
 Rigidbody2D:
