@@ -5,7 +5,6 @@ public class BaseGameController : Singleton<BaseGameController>
 {
     #region Constants
     private const int wallCreationThreshold = 20;
-    private const int stepCreationThreshold = 20;
     #endregion
 
     #region Editor Fields
@@ -13,13 +12,13 @@ public class BaseGameController : Singleton<BaseGameController>
     private PlayerController playerController;
 
     [SerializeField]
+    private StepGeneratorController StepGeneratorController;
+
+    [SerializeField]
     private CameraController cameraController;
 
     [SerializeField]
     private GameObject floor;
-
-    [SerializeField]
-    private GameObject stepPrefab;
 
     [SerializeField]
     private GameObject wallPrefab;
@@ -34,22 +33,6 @@ public class BaseGameController : Singleton<BaseGameController>
 
     [SerializeField]
     private GameObject currentHighestRightWall;
-
-
-    [Space(10)]
-    [Header("Step spawn values")]
-
-    [SerializeField]
-    private float spawnStepsMinX;
-
-    [SerializeField]
-    private float spawnStepsMaxX;
-
-    [SerializeField]
-    private float spawnStepsMinY;
-
-    [SerializeField]
-    private float spawnStepsMaxY;
 
     [Space(10)]
     [Header("Difficulty settings")]
@@ -72,7 +55,6 @@ public class BaseGameController : Singleton<BaseGameController>
     #region Private Fields
 
     private GameObject currentHighestStep;
-    private StepController currentHighestStepController;
 
     private WallController currentHighestLeftWallController;
 
@@ -84,8 +66,6 @@ public class BaseGameController : Singleton<BaseGameController>
     // Start is called before the first frame update
     void Start()
     {
-        currentHighestStepController = FindObjectOfType<StepController>();
-        currentHighestStep = currentHighestStepController.gameObject;
 
         currentHighestLeftWallController = currentHighestLeftWall.GetComponent<WallController>();
         
@@ -95,35 +75,7 @@ public class BaseGameController : Singleton<BaseGameController>
     // Update is called once per frame
     void Update()
     {
-        UpdateSteps();
         UpdateWalls();
-    }
-
-    #endregion
-
-    #region Step Creation
-    private void UpdateSteps()
-    {
-        float currentPlayerPos = GetPlayerY();
-        float currentHighestStepPos = currentHighestStepController.GetStepY();
-
-        if(currentHighestStepPos - currentPlayerPos < stepCreationThreshold)
-        {
-            CreateStep(currentHighestStepPos);
-        }
-    }
-
-    private void CreateStep(float currentHighestStepPos)
-    {
-        float min_y = currentHighestStepPos + spawnStepsMinY;
-        float max_y = currentHighestStepPos + spawnStepsMaxY;
-
-        float x = Random.Range(spawnStepsMinX, spawnStepsMaxX);
-        float y = Random.Range(min_y, max_y);
-
-        GameObject newStep = Instantiate(stepPrefab, new Vector3(x, y, 0), Quaternion.identity);
-        currentHighestStep = newStep;
-        currentHighestStepController = currentHighestStep.GetComponent<StepController>();
     }
 
     #endregion

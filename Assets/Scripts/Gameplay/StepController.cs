@@ -33,7 +33,8 @@ public class StepController : MonoBehaviour
             if (!isClimbed)
             {
                 isClimbed = true;
-                climbed.Invoke(); 
+                climbed.Invoke();
+                climbed.RemoveAllListeners();
             }
         }
         else
