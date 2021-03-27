@@ -24,7 +24,7 @@ public class CameraController : MonoBehaviour
             transform.position = smoothedPosition;
         }
         
-        transform.position += new Vector3(0f, Time.deltaTime * BaseGameController.Instance.FallingSpeed , 0f);
+        transform.position += new Vector3(0f, Time.deltaTime * BaseGameController.Instance.DifficultyController.FallingSpeed , 0f);
         
     }
     #endregion

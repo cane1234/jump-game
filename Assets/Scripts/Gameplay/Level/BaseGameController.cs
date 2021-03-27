@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class BaseGameController : Singleton<BaseGameController>
@@ -8,36 +9,35 @@ public class BaseGameController : Singleton<BaseGameController>
     #endregion
 
     #region Editor Fields
-    [SerializeField]
-    private PlayerController playerController;
+    [Header("Controllers")]
+
+    public PlayerController PlayerController;
+
+    public StepGeneratorController StepGeneratorController;
+
+    public CameraController CameraController;
+
+    public DifficultyController DifficultyController;
+
+    public PlaceTileFeatureController PlaceTileFeatureController;
 
     [SerializeField]
-    private StepGeneratorController StepGeneratorController;
+    private GameObject Floor;
 
     [SerializeField]
-    private CameraController cameraController;
-
-    [SerializeField]
-    private GameObject floor;
-
-    [SerializeField]
-    private GameObject wallPrefab;
+    private GameObject WallPrefab;
 
     [SerializeField]
     private Text scoreCount;
 
-    [Space(10)]
+
+
     [Header("Walls")]
     [SerializeField]
     private GameObject currentHighestLeftWall;
 
     [SerializeField]
     private GameObject currentHighestRightWall;
-
-    [Space(10)]
-    [Header("Difficulty settings")]
-    [SerializeField]
-    private float fallingSpeed;
 
     #endregion
 
@@ -47,8 +47,8 @@ public class BaseGameController : Singleton<BaseGameController>
     ///</summary>
     public float FallingSpeed
     {
-        get { return fallingSpeed; }
-        set { fallingSpeed = value; }
+        get { return DifficultyController.FallingSpeed; }
+        set { DifficultyController.FallingSpeed = value; }
     }
     #endregion
 
@@ -96,8 +96,8 @@ public class BaseGameController : Singleton<BaseGameController>
 
     private void CreateWalls(float y, float leftX, float rightX)
     {
-        GameObject newLeftWall = Instantiate(wallPrefab, new Vector3(leftX, y, 0), Quaternion.identity);
-        GameObject newRightWall = Instantiate(wallPrefab, new Vector3(rightX, y, 0), Quaternion.identity);
+        GameObject newLeftWall = Instantiate(WallPrefab, new Vector3(leftX, y, 0), Quaternion.identity);
+        GameObject newRightWall = Instantiate(WallPrefab, new Vector3(rightX, y, 0), Quaternion.identity);
 
         currentHighestLeftWallController = newLeftWall.GetComponent<WallController>();
 
@@ -111,13 +111,13 @@ public class BaseGameController : Singleton<BaseGameController>
     public void PauseGame()
     {
         Time.timeScale = 0;
-        playerController.PlayerInputEnabled = false;
+        PlayerController.PlayerInputEnabled = false;
     }
 
     public void ResumeGame()
     {
         Time.timeScale = 1;
-        playerController.PlayerInputEnabled = true;
+        PlayerController.PlayerInputEnabled = true;
     }
     #endregion
 
@@ -134,10 +134,16 @@ public class BaseGameController : Singleton<BaseGameController>
     /// <returns> Returns the y coordinate of the lowest point of the Player gameObject. </returns>
     public float GetPlayerY()
     {
-        Bounds playerBounds = playerController.gameObject.GetComponent<BoxCollider2D>().bounds;
+        Bounds playerBounds = PlayerController.gameObject.GetComponent<BoxCollider2D>().bounds;
         float playerBottom = playerBounds.center.y - playerBounds.extents.y;
 
         return playerBottom;
+    }
+
+    public Tuple<float, float> GetPlayerCenterPosition()
+    {
+        Bounds playerBounds = PlayerController.gameObject.GetComponent<BoxCollider2D>().bounds;
+        return new Tuple<float, float>(playerBounds.center.x, playerBounds.center.y);
     }
 
     public void IncrementScore()

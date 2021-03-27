@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     private float jumpForce;
+
     #endregion
 
     private enum LogicState
@@ -69,12 +70,18 @@ public class PlayerController : MonoBehaviour
     #region Private Methods
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        currentLogicState = LogicState.Standing;
+        if (collision.gameObject.name.Contains("Step"))
+        {
+            currentLogicState = LogicState.Standing;
+        }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        currentLogicState = LogicState.Jumping;
+        if (collision.gameObject.name.Contains("Step"))
+        {
+            currentLogicState = LogicState.Jumping;
+        }
     }
     #endregion
 }

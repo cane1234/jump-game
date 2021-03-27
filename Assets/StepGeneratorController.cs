@@ -65,11 +65,11 @@ public class StepGeneratorController : MonoBehaviour
 
         if (currentHighestStepPos - currentPlayerPos < stepCreationThreshold)
         {
-            CreateStep(currentHighestStepPos);
+            CreateNextStepRandom(currentHighestStepPos);
         }
     }
 
-    private void CreateStep(float currentHighestStepPos)
+    private void CreateNextStepRandom(float currentHighestStepPos)
     {
         float min_y = currentHighestStepPos + spawnStepsMinY;
         float max_y = currentHighestStepPos + spawnStepsMaxY;
@@ -77,10 +77,18 @@ public class StepGeneratorController : MonoBehaviour
         float x = Random.Range(spawnStepsMinX, spawnStepsMaxX);
         float y = Random.Range(min_y, max_y);
 
-        GameObject newStep = Instantiate(stepPrefab, new Vector3(x, y, 0), Quaternion.identity);
-        newStep.transform.parent = StepRoot.transform;
+        GameObject newStep = CreateStep(x, y);
+       
         currentHighestStep = newStep;
         currentHighestStepController = currentHighestStep.GetComponent<StepController>();
+    }
+
+    public GameObject CreateStep(float x, float y)
+    {
+        GameObject newStep = Instantiate(stepPrefab, new Vector3(x, y, 0), Quaternion.identity);
+        newStep.transform.parent = StepRoot.transform;
+
+        return newStep;
     }
 
     #endregion
