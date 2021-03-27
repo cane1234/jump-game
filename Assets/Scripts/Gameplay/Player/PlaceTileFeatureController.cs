@@ -8,6 +8,8 @@ public class PlaceTileFeatureController : MonoBehaviour
 {
     #region Private Fields
     private bool isOnCooldown;
+
+    private float currentCooldown;
     #endregion
 
     #region Editor Fields
@@ -20,6 +22,7 @@ public class PlaceTileFeatureController : MonoBehaviour
     #region Constants
     private const string readyText = "Ready";
     private const string onCooldownText = "On Cooldown";
+    private const float updateTextPeriod = 0.03f;
     #endregion
 
     #region Unity Methods
@@ -60,8 +63,17 @@ public class PlaceTileFeatureController : MonoBehaviour
     private IEnumerator StartCooldownTimer()
     {
         isOnCooldown = true;
+        currentCooldown = cooldownTime;
         UpdateText();
-        yield return new WaitForSeconds(cooldownTime);
+
+        while (currentCooldown > 0)
+        {
+            yield return new WaitForSeconds(updateTextPeriod);
+            currentCooldown-= updateTextPeriod;
+
+            UpdateText();
+        }
+        
 
         isOnCooldown = false;
         UpdateText();
@@ -73,7 +85,7 @@ public class PlaceTileFeatureController : MonoBehaviour
     {
         if (isOnCooldown)
         {
-            IsOnCooldownText.text = onCooldownText;
+            IsOnCooldownText.text = currentCooldown.ToString("#.##");
             return;
         }
 
