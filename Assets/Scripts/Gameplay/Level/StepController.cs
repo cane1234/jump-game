@@ -27,7 +27,7 @@ public class StepController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(BaseGameController.Instance.GetPlayerY() > GetStepY())
+        if(BaseGameController.Instance.GetPlayerBottomY() > GetStepY())
         {
             boxCollider.enabled = true;
             if (!isClimbed)

@@ -4,9 +4,6 @@ using UnityEngine.UI;
 
 public class BaseGameController : Singleton<BaseGameController>
 {
-    #region Constants
-    private const int wallCreationThreshold = 20;
-    #endregion
 
     #region Editor Fields
     [Header("Controllers")]
@@ -21,23 +18,13 @@ public class BaseGameController : Singleton<BaseGameController>
 
     public PlaceTileFeatureController PlaceTileFeatureController;
 
+    public WallGeneratorController WallGeneratorController;
+
     [SerializeField]
     private GameObject Floor;
 
     [SerializeField]
-    private GameObject WallPrefab;
-
-    [SerializeField]
     private Text scoreCount;
-
-
-
-    [Header("Walls")]
-    [SerializeField]
-    private GameObject currentHighestLeftWall;
-
-    [SerializeField]
-    private GameObject currentHighestRightWall;
 
     #endregion
 
@@ -54,10 +41,6 @@ public class BaseGameController : Singleton<BaseGameController>
 
     #region Private Fields
 
-    private GameObject currentHighestStep;
-
-    private WallController currentHighestLeftWallController;
-
     private int stepsClimbed;
 
     #endregion
@@ -66,43 +49,13 @@ public class BaseGameController : Singleton<BaseGameController>
     // Start is called before the first frame update
     void Start()
     {
-
-        currentHighestLeftWallController = currentHighestLeftWall.GetComponent<WallController>();
-        
         stepsClimbed = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        UpdateWalls();
-    }
 
-    #endregion
-
-    #region Wall Creation
-    private void UpdateWalls()
-    {
-        float currentPlayerPos = GetPlayerY();
-
-        float currentHighestLeftWallPos = currentHighestLeftWallController.GetWallY();
-        //float currentHighestRightWallPos = currentHighestRightWall.GetComponent<WallController>().GetWallY();
-
-        if(currentHighestLeftWallPos - currentPlayerPos < wallCreationThreshold)
-        {
-            CreateWalls(currentHighestLeftWallPos, currentHighestLeftWall.transform.position.x, currentHighestRightWall.transform.position.x);
-        }
-    }
-
-    private void CreateWalls(float y, float leftX, float rightX)
-    {
-        GameObject newLeftWall = Instantiate(WallPrefab, new Vector3(leftX, y, 0), Quaternion.identity);
-        GameObject newRightWall = Instantiate(WallPrefab, new Vector3(rightX, y, 0), Quaternion.identity);
-
-        currentHighestLeftWallController = newLeftWall.GetComponent<WallController>();
-
-        currentHighestLeftWall = newLeftWall;
-        currentHighestRightWall = newRightWall;
     }
 
     #endregion
@@ -132,7 +85,7 @@ public class BaseGameController : Singleton<BaseGameController>
     /// Used by steps to calculate if the player is above them, so they can turn on their collider.
     /// </summary>
     /// <returns> Returns the y coordinate of the lowest point of the Player gameObject. </returns>
-    public float GetPlayerY()
+    public float GetPlayerBottomY()
     {
         Bounds playerBounds = PlayerController.gameObject.GetComponent<BoxCollider2D>().bounds;
         float playerBottom = playerBounds.center.y - playerBounds.extents.y;

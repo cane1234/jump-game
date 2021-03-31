@@ -65,15 +65,8 @@ public class PlaceTileFeatureController : MonoBehaviour
         isOnCooldown = true;
         currentCooldown = cooldownTime;
         UpdateText();
-
-        while (currentCooldown > 0)
-        {
-            yield return new WaitForSeconds(updateTextPeriod);
-            currentCooldown-= updateTextPeriod;
-
-            UpdateText();
-        }
-        
+       
+        yield return new WaitForSeconds(cooldownTime);
 
         isOnCooldown = false;
         UpdateText();
@@ -85,7 +78,7 @@ public class PlaceTileFeatureController : MonoBehaviour
     {
         if (isOnCooldown)
         {
-            IsOnCooldownText.text = currentCooldown.ToString("#.##");
+            IsOnCooldownText.text = onCooldownText;
             return;
         }
 

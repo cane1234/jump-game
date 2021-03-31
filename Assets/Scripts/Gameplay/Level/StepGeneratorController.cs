@@ -14,8 +14,6 @@ public class StepGeneratorController : MonoBehaviour
     [SerializeField]
     private GameObject StepRoot;
 
-
-    [Space(10)]
     [Header("Step spawn values")]
 
     [SerializeField]
@@ -60,7 +58,7 @@ public class StepGeneratorController : MonoBehaviour
     #region Step Creation
     private void UpdateSteps()
     {
-        float currentPlayerPos = BaseGameController.Instance.GetPlayerY();
+        float currentPlayerPos = BaseGameController.Instance.GetPlayerBottomY();
         float currentHighestStepPos = currentHighestStepController.GetStepY();
 
         if (currentHighestStepPos - currentPlayerPos < stepCreationThreshold)
