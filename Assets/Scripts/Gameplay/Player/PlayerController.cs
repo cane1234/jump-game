@@ -14,6 +14,12 @@ public class PlayerController : MonoBehaviour
     private bool collisionExit;
 
     private bool collisionEnter;
+
+    private bool isInCollision;
+
+    [Range(0, 100)]
+    [SerializeField]
+    private float fuel;
     #endregion
 
     #region Editor Fields
@@ -24,6 +30,9 @@ public class PlayerController : MonoBehaviour
     private float jumpForce;
 
     [SerializeField]
+    private float jetpackForce;
+
+    [SerializeField]
     private Animator PlayerAnimator;
 
     [SerializeField]
@@ -31,11 +40,14 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     private SpriteRenderer PlayerSpriteRenderer;
+
+    [SerializeField]
+    private float fuelConsumption;
     #endregion
 
     private enum LogicState
     {
-        Jumping, Standing, Walking
+        Jumping, Standing, Walking, Jetpack
     }
 
     #region Unity methods
@@ -46,6 +58,9 @@ public class PlayerController : MonoBehaviour
         rigidBody2D = GetComponent<Rigidbody2D>();
         rigidBody2D.freezeRotation = true;
         playerInputEnabled = true;
+
+        fuel = 100;
+
         EnterJumpingState();
 
     }
@@ -77,11 +92,13 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Collision
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.name.Contains("Step") || collision.gameObject.name.Contains("Floor"))
         {
             collisionEnter = true;
+            isInCollision = true;
         }
     }
 
@@ -90,6 +107,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.name.Contains("Step") || collision.gameObject.name.Contains("Floor"))
         {
             collisionExit = true;
+            isInCollision = false;
         }
     }
 
@@ -142,6 +160,30 @@ public class PlayerController : MonoBehaviour
             case LogicState.Jumping:
                 HandleJumpingState();
                 break;
+            case LogicState.Jetpack:
+                HandleJetpackState();
+                break;
+        }
+    }
+
+    private void HandleJetpackState()
+    {
+        
+        if (!Input.GetKey(KeyCode.W) || fuel <= 0)
+        {
+            if (!isInCollision)
+            {
+                EnterJumpingState();
+            }
+            else
+            {
+                EnterStandingState();
+            }
+        }
+        else
+        {
+            rigidBody2D.AddForce(new Vector2(0, jetpackForce * Time.deltaTime));
+            fuel -= fuelConsumption * Time.deltaTime;
         }
     }
 
@@ -156,6 +198,12 @@ public class PlayerController : MonoBehaviour
         {
             rigidBody2D.AddForce(new Vector2(0, jumpForce));
             EnterJumpingState();
+        }
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            rigidBody2D.AddForce(new Vector2(0, jetpackForce * Time.deltaTime));
+            EnterJetpackState();
         }
     }
 
@@ -176,6 +224,12 @@ public class PlayerController : MonoBehaviour
         {
             EnterJumpingState();
         }
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            rigidBody2D.AddForce(new Vector2(0, jetpackForce * Time.deltaTime));
+            EnterJetpackState();
+        }
     }
 
     private void HandleJumpingState()
@@ -184,6 +238,12 @@ public class PlayerController : MonoBehaviour
         {
             EnterStandingState();
         }
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            rigidBody2D.AddForce(new Vector2(0, jetpackForce * Time.deltaTime));
+            EnterJetpackState();
+        }
     }
 
     private void EnterStandingState()
@@ -191,6 +251,8 @@ public class PlayerController : MonoBehaviour
         currentLogicState = LogicState.Standing;
 
         StandAnimation();
+
+        Debug.Log("Entering stand");
     }
 
     private void EnterWalkingState()
@@ -198,6 +260,8 @@ public class PlayerController : MonoBehaviour
         currentLogicState = LogicState.Walking;
 
         WalkAnimation();
+
+        Debug.Log("Entering walk");
     }
 
     private void EnterJumpingState()
@@ -205,6 +269,17 @@ public class PlayerController : MonoBehaviour
         currentLogicState = LogicState.Jumping;
 
         JumpAnimation();
+
+        Debug.Log("Entering jump");
+    }
+
+    private void EnterJetpackState()
+    {
+        currentLogicState = LogicState.Jetpack;
+
+        JumpAnimation();
+
+        Debug.Log("Entering Jetpack");
     }
     #endregion
 

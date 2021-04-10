@@ -9,7 +9,7 @@ public class PlaceTileFeatureController : MonoBehaviour
     #region Private Fields
     private bool isOnCooldown;
 
-    private float currentCooldown;
+    long timeStarted;
     #endregion
 
     #region Editor Fields
@@ -21,8 +21,6 @@ public class PlaceTileFeatureController : MonoBehaviour
 
     #region Constants
     private const string readyText = "Ready";
-    private const string onCooldownText = "On Cooldown";
-    private const float updateTextPeriod = 0.03f;
     #endregion
 
     #region Unity Methods
@@ -41,8 +39,9 @@ public class PlaceTileFeatureController : MonoBehaviour
             Tuple<float, float> tilePosition = CalculateTilePosition();
             PlaceTile(tilePosition.Item1, tilePosition.Item2);
             StartCoroutine(StartCooldownTimer());
-
         }
+
+        UpdateText();
 
     }
     #endregion
@@ -57,13 +56,13 @@ public class PlaceTileFeatureController : MonoBehaviour
 
     private void PlaceTile(float x, float y)
     {
-        GameObject newStep = BaseGameController.Instance.StepGeneratorController.CreateStep(x, y);
+        BaseGameController.Instance.StepGeneratorController.CreateStep(x, y);
     }
 
     private IEnumerator StartCooldownTimer()
     {
+        timeStarted = DateTime.Now.Ticks;
         isOnCooldown = true;
-        currentCooldown = cooldownTime;
         UpdateText();
        
         yield return new WaitForSeconds(cooldownTime);
@@ -78,7 +77,9 @@ public class PlaceTileFeatureController : MonoBehaviour
     {
         if (isOnCooldown)
         {
-            IsOnCooldownText.text = onCooldownText;
+            long timeNow = DateTime.Now.Ticks;
+            TimeSpan span = new TimeSpan(timeNow - timeStarted);
+            IsOnCooldownText.text = (cooldownTime - span.TotalSeconds).ToString("#.#");
             return;
         }
 

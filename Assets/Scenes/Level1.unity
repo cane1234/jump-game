@@ -358,7 +358,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fallingSpeed: 3
-  fallingAccelation: 0
+  fallingAccelation: 1
+  stepsPerLevel: 15
 --- !u!1 &337278326
 GameObject:
   m_ObjectHideFlags: 0
@@ -1759,7 +1760,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e24765be71d2ac439f0bba52ccb595f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cooldownTime: 5.5
+  cooldownTime: 250
   IsOnCooldownText: {fileID: 671895216}
 --- !u!1 &1466730296
 GameObject:
@@ -1872,13 +1873,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b69359169e4ded849a9ff0d13a5d98f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fuel: 0
   speed: 3000
   jumpForce: 3000
+  jetpackForce: 3000
   PlayerAnimator: {fileID: 1469317719}
   AnimatorControllers:
   - {fileID: 9100000, guid: dc689dcf0f2a62244b231798e30405c2, type: 2}
   - {fileID: 9100000, guid: b9901ed754b2c1a469259156df03f85c, type: 2}
   PlayerSpriteRenderer: {fileID: 1469317716}
+  fuelConsumption: 5
 --- !u!50 &1469317715
 Rigidbody2D:
   serializedVersion: 4
