@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -18,11 +19,19 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float jumpForce;
 
+    [SerializeField]
+    private Animator PlayerAnimator;
+
+    [SerializeField]
+    private List<RuntimeAnimatorController> AnimatorControllers;
+
+    [SerializeField]
+    private SpriteRenderer PlayerSpriteRenderer;
     #endregion
 
     private enum LogicState
     {
-        Jumping, Standing
+        Jumping, Standing, Walking
     }
 
     #region Unity methods
@@ -33,7 +42,7 @@ public class PlayerController : MonoBehaviour
         rigidBody2D = GetComponent<Rigidbody2D>();
         rigidBody2D.freezeRotation = true;
         playerInputEnabled = true;
-        currentLogicState = LogicState.Standing;
+        currentLogicState = LogicState.Jumping;
     }
 
     private void Update()
@@ -44,7 +53,7 @@ public class PlayerController : MonoBehaviour
             Vector2 movement = new Vector2(moveHorizontal, 0);
 
             rigidBody2D.AddForce(movement * speed * Time.deltaTime);
-
+            
             if (currentLogicState == LogicState.Standing)
             {
                 if (Input.GetKeyDown(KeyCode.Space))
@@ -70,7 +79,7 @@ public class PlayerController : MonoBehaviour
     #region Private Methods
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.name.Contains("Step"))
+        if ((collision.gameObject.name.Contains("Step") || collision.gameObject.name.Contains("Floor")) && currentLogicState == LogicState.Jumping)
         {
             currentLogicState = LogicState.Standing;
         }
@@ -78,10 +87,39 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.name.Contains("Step"))
+        if (collision.gameObject.name.Contains("Step") && currentLogicState == LogicState.Standing)
         {
             currentLogicState = LogicState.Jumping;
         }
+    }
+    #endregion
+
+    #region Animations
+    private void TurnLefAnimationt()
+    {
+        PlayerSpriteRenderer.flipX = true;
+    }
+
+    private void TurnRightAnimation()
+    {
+        PlayerSpriteRenderer.flipX = false;
+    }
+
+    private void StandAnimation()
+    {
+        PlayerAnimator.runtimeAnimatorController = null;
+    }
+
+    private void JumpAnimation()
+    {
+        rigidBody2D.AddForce(new Vector2(0, jumpForce));
+        currentLogicState = LogicState.Jumping;
+        PlayerAnimator.runtimeAnimatorController = AnimatorControllers[0];
+    }
+
+    private void WalkAnimation()
+    {
+        PlayerAnimator.runtimeAnimatorController = AnimatorControllers[1]; 
     }
     #endregion
 }
