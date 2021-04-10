@@ -10,6 +10,10 @@ public class PlayerController : MonoBehaviour
     private bool playerInputEnabled;
 
     private LogicState currentLogicState;
+
+    private bool collisionExit;
+
+    private bool collisionEnter;
     #endregion
 
     #region Editor Fields
@@ -42,27 +46,23 @@ public class PlayerController : MonoBehaviour
         rigidBody2D = GetComponent<Rigidbody2D>();
         rigidBody2D.freezeRotation = true;
         playerInputEnabled = true;
-        currentLogicState = LogicState.Jumping;
+        EnterJumpingState();
+
     }
 
     private void Update()
     {
-        if (playerInputEnabled)
+        if (!playerInputEnabled)
         {
-            float moveHorizontal = Input.GetAxis("Horizontal");
-            Vector2 movement = new Vector2(moveHorizontal, 0);
-
-            rigidBody2D.AddForce(movement * speed * Time.deltaTime);
-            
-            if (currentLogicState == LogicState.Standing)
-            {
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    rigidBody2D.AddForce(new Vector2(0, jumpForce));
-                    currentLogicState = LogicState.Jumping;
-                }
-            }
+            return;
         }
+
+        bool isThereHorizontalMovement = ApplyHorizontalMovement();
+
+        HandleState(isThereHorizontalMovement);
+
+        ResetCollisionStates();
+        
     }
 
     #endregion
@@ -76,26 +76,32 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    #region Private Methods
+    #region Collision
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if ((collision.gameObject.name.Contains("Step") || collision.gameObject.name.Contains("Floor")) && currentLogicState == LogicState.Jumping)
+        if (collision.gameObject.name.Contains("Step") || collision.gameObject.name.Contains("Floor"))
         {
-            currentLogicState = LogicState.Standing;
+            collisionEnter = true;
         }
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.name.Contains("Step") && currentLogicState == LogicState.Standing)
+        if (collision.gameObject.name.Contains("Step"))
         {
-            currentLogicState = LogicState.Jumping;
+            collisionExit = true;
         }
+    }
+
+    private void ResetCollisionStates()
+    {
+        collisionEnter = false;
+        collisionExit = false;
     }
     #endregion
 
     #region Animations
-    private void TurnLefAnimationt()
+    private void TurnLeftAnimation()
     {
         PlayerSpriteRenderer.flipX = true;
     }
@@ -112,14 +118,123 @@ public class PlayerController : MonoBehaviour
 
     private void JumpAnimation()
     {
-        rigidBody2D.AddForce(new Vector2(0, jumpForce));
-        currentLogicState = LogicState.Jumping;
         PlayerAnimator.runtimeAnimatorController = AnimatorControllers[0];
     }
 
     private void WalkAnimation()
     {
         PlayerAnimator.runtimeAnimatorController = AnimatorControllers[1]; 
+    }
+    #endregion
+
+    #region State Handling
+
+    private void HandleState(bool isThereHorizontalMovement)
+    {
+        switch (currentLogicState)
+        {
+            case LogicState.Standing:
+                HandleStandingState(isThereHorizontalMovement);
+                break;
+            case LogicState.Walking:
+                HandleWalkingState(isThereHorizontalMovement);
+                break;
+            case LogicState.Jumping:
+                HandleJumpingState();
+                break;
+        }
+    }
+
+    private void HandleStandingState(bool isThereHorizontalMovement)
+    {
+        if (isThereHorizontalMovement)
+        {
+            EnterWalkingState();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            rigidBody2D.AddForce(new Vector2(0, jumpForce));
+            EnterJumpingState();
+        }
+    }
+
+    private void HandleWalkingState(bool isThereHorizontalMovement)
+    {
+        if (!isThereHorizontalMovement)
+        {
+            EnterStandingState();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            rigidBody2D.AddForce(new Vector2(0, jumpForce));
+            EnterJumpingState();
+        }
+
+        if (collisionExit)
+        {
+            EnterJumpingState();
+        }
+    }
+
+    private void HandleJumpingState()
+    {
+        if (collisionEnter)
+        {
+            EnterStandingState();
+        }
+    }
+
+    private void EnterStandingState()
+    {
+        currentLogicState = LogicState.Standing;
+
+        StandAnimation();
+    }
+
+    private void EnterWalkingState()
+    {
+        currentLogicState = LogicState.Walking;
+
+        WalkAnimation();
+    }
+
+    private void EnterJumpingState()
+    {
+        currentLogicState = LogicState.Jumping;
+
+        JumpAnimation();
+    }
+    #endregion
+
+    #region Horizontal Movement
+    private void HandleTurning(float movement)
+    {
+        if(movement > 0)
+        {
+            TurnRightAnimation();
+        } 
+        else if(movement < 0)
+        {
+            TurnLeftAnimation();
+        }
+    }
+
+    private bool ApplyHorizontalMovement()
+    {
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        Vector2 movement = new Vector2(moveHorizontal, 0);
+
+        HandleTurning(moveHorizontal);
+        rigidBody2D.AddForce(movement * speed * Time.deltaTime);
+
+        if(moveHorizontal != 0)
+        {
+            return true;
+        }
+
+        return false;
     }
     #endregion
 }
