@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
     [Range(0, 100)]
     [HideInInspector]
     public float fuel;
+
+    private int turned;
     #endregion
 
     #region Editor Fields
@@ -59,6 +61,7 @@ public class PlayerController : MonoBehaviour
         rigidBody2D.freezeRotation = true;
         playerInputEnabled = true;
 
+        turned = 1;
         fuel = 100;
 
         EnterJumpingState();
@@ -122,11 +125,13 @@ public class PlayerController : MonoBehaviour
     private void TurnLeftAnimation()
     {
         PlayerSpriteRenderer.flipX = true;
+        turned = -1;
     }
 
     private void TurnRightAnimation()
     {
         PlayerSpriteRenderer.flipX = false;
+        turned = 1;
     }
 
     private void StandAnimation()
