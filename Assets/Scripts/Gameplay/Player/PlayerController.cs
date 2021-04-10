@@ -87,7 +87,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.gameObject.name.Contains("Step"))
+        if (collision.gameObject.name.Contains("Step") || collision.gameObject.name.Contains("Floor"))
         {
             collisionExit = true;
         }
