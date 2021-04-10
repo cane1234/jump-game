@@ -37,6 +37,11 @@ public class BaseGameController : Singleton<BaseGameController>
         get { return DifficultyController.FallingSpeed; }
         set { DifficultyController.FallingSpeed = value; }
     }
+
+    public int StepsClimbed
+    {
+        get { return stepsClimbed; }
+    }
     #endregion
 
     #region Private Fields
