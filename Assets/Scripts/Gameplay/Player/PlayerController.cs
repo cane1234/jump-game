@@ -18,8 +18,8 @@ public class PlayerController : MonoBehaviour
     private bool isInCollision;
 
     [Range(0, 100)]
-    [SerializeField]
-    private float fuel;
+    [HideInInspector]
+    public float fuel;
     #endregion
 
     #region Editor Fields
