@@ -23,6 +23,9 @@ public class HighScoreProcessor : MonoBehaviour
     [SerializeField]
     private HighScoreDisplay highScoreDisplay;
 
+    [SerializeField]
+    private TextMeshProUGUI congratulationsText;
+
     #endregion
 
     #region Private Fields
@@ -38,6 +41,7 @@ public class HighScoreProcessor : MonoBehaviour
     {
         ProcessCurrentScore();
 
+        congratulationsText.gameObject.SetActive(false);
     }
 
     private void ProcessCurrentScore()
@@ -63,9 +67,13 @@ public class HighScoreProcessor : MonoBehaviour
     {
         confirmButton.onClick.RemoveListener(onConfirmNickname);
         string nickname = nicknameInput.text;
+        inputParent.SetActive(false);
+
+        congratulationsText.SetText("Congratulations " + nickname + "!");
+        congratulationsText.gameObject.SetActive(true);
 
         highScoreManager.AddHighScoreEntry(nickname, currentScore);
-        highScoreDisplay.Show();
+        highScoreDisplay.Reload();
     }
     #endregion
 }

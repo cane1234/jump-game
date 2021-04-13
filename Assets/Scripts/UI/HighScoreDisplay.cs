@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HighScoreDisplay : MonoBehaviour
 {
-    public void Show()
+    public void Reload()
     {
         HighScoreManager highScoreManager = LevelManager.Instance.HighScoreManager;
         List<HighScoreEntry> list = highScoreManager.HighScores;
