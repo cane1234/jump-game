@@ -83,6 +83,7 @@ public class BaseGameController : Singleton<BaseGameController>
     public void EndGame()
     {
         Debug.Log("Steps climbed: " + stepsClimbed + ".");
+        LevelManager.Instance.CurrentScore = stepsClimbed;
         LevelManager.Instance.ToEndGame();
     }
 

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LevelManager : Singleton<LevelManager>
@@ -17,6 +18,23 @@ public class LevelManager : Singleton<LevelManager>
 
     private string currentLevelName;
     private IntroAnimationController IntroAnimation;
+
+    private HighScoreManager highScoreManager;
+    private int currentScore;
+    #endregion
+
+    #region Public Field
+    public HighScoreManager HighScoreManager
+    {
+        get { return highScoreManager; }
+    }
+
+    public int CurrentScore
+    {
+        get { return currentScore; }
+        set { currentScore = value; }
+    }
+
     #endregion
 
     #region Unity Methods
@@ -26,6 +44,8 @@ public class LevelManager : Singleton<LevelManager>
         DontDestroyOnLoad(this.gameObject);
         currentLevelName = gameEntryLevelName;
         Debug.Log("Level Manager: Started. Current level: " + currentLevelName);
+
+        InitiateHighScore();
 
         IntroAnimation = FindObjectOfType<IntroAnimationController>();
         IntroAnimation.IntroAnimationCompleteEvent.AddListener(OnIntroAnimationComplete);
@@ -49,6 +69,14 @@ public class LevelManager : Singleton<LevelManager>
         IntroAnimation.IntroAnimationCompleteEvent.RemoveListener(OnIntroAnimationComplete);
         IntroAnimation = null;
         LoadLevel(mainMenuLevelName);
+    }
+
+    private void InitiateHighScore()
+    {
+        if (highScoreManager == null)
+        {
+            highScoreManager = new HighScoreManager();
+        }
     }
 
     #endregion
@@ -78,6 +106,7 @@ public class LevelManager : Singleton<LevelManager>
     {
         LoadLevel(endGameLevelname);
     }
+
 
     #endregion
 }
