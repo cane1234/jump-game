@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HighScoreEntry : IComparer<HighScoreEntry>
+public class HighScoreEntry : IComparable<HighScoreEntry>
 {
     #region Private Fields
 
@@ -30,9 +31,10 @@ public class HighScoreEntry : IComparer<HighScoreEntry>
     #endregion
 
     #region IComparer
-    public int Compare(HighScoreEntry x, HighScoreEntry y)
+
+    public int CompareTo(HighScoreEntry other)
     {
-        return x.Score - y.Score;
+        return other.Score - Score;
     }
 
     #endregion
