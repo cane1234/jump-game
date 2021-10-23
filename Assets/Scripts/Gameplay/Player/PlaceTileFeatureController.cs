@@ -8,8 +8,10 @@ public class PlaceTileFeatureController : MonoBehaviour
 {
     #region Private Fields
     private bool isOnCooldown;
-
-    long timeStarted;
+    private long timeStarted;
+    private float remainingCooldown;
+    private Coroutine CooldownCoroutine;
+    
     #endregion
 
     #region Editor Fields
@@ -38,7 +40,17 @@ public class PlaceTileFeatureController : MonoBehaviour
         {
             Tuple<float, float> tilePosition = CalculateTilePosition();
             PlaceTile(tilePosition.Item1, tilePosition.Item2);
-            StartCoroutine(StartCooldownTimer());
+            CooldownCoroutine = StartCoroutine(StartCooldownTimer(cooldownTime));
+        }
+
+        if (isOnCooldown && !BaseGameController.Instance.Pause)
+        {
+            remainingCooldown = remainingCooldown - Time.deltaTime;
+
+            if(remainingCooldown <= 0)
+            {
+                remainingCooldown = 0;
+            }
         }
 
         UpdateText();
@@ -59,16 +71,28 @@ public class PlaceTileFeatureController : MonoBehaviour
         BaseGameController.Instance.StepGeneratorController.CreateStep(x, y);
     }
 
-    private IEnumerator StartCooldownTimer()
+    private IEnumerator StartCooldownTimer(float duration)
     {
-        timeStarted = DateTime.Now.Ticks;
+        remainingCooldown = duration;
         isOnCooldown = true;
-        UpdateText();
-       
-        yield return new WaitForSeconds(cooldownTime);
+
+        yield return new WaitForSeconds(duration);
 
         isOnCooldown = false;
-        UpdateText();
+        CooldownCoroutine = null;
+    }
+
+    public void Pause()
+    {
+        if (CooldownCoroutine != null)
+        {
+            StopCoroutine(CooldownCoroutine);
+        }
+    }
+
+    public void Resume()
+    {
+        CooldownCoroutine = StartCoroutine(StartCooldownTimer(remainingCooldown));
     }
     #endregion
 
@@ -77,9 +101,7 @@ public class PlaceTileFeatureController : MonoBehaviour
     {
         if (isOnCooldown)
         {
-            long timeNow = DateTime.Now.Ticks;
-            TimeSpan span = new TimeSpan(timeNow - timeStarted);
-            IsOnCooldownText.text = (cooldownTime - span.TotalSeconds).ToString("#.#");
+            IsOnCooldownText.text = (remainingCooldown).ToString("#.##");
             return;
         }
 

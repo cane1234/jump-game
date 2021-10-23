@@ -42,6 +42,8 @@ public class BaseGameController : Singleton<BaseGameController>
     {
         get { return stepsClimbed; }
     }
+
+    public bool Pause { get; private set; }
     #endregion
 
     #region Private Fields
@@ -70,12 +72,16 @@ public class BaseGameController : Singleton<BaseGameController>
     {
         Time.timeScale = 0;
         PlayerController.PlayerInputEnabled = false;
+        PlaceTileFeatureController.Pause();
+        Pause = true;
     }
 
     public void ResumeGame()
     {
         Time.timeScale = 1;
         PlayerController.PlayerInputEnabled = true;
+        PlaceTileFeatureController.Resume();
+        Pause = false;
     }
     #endregion
 
