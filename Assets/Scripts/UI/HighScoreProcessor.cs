@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,20 +35,25 @@ public class HighScoreProcessor : MonoBehaviour
     private int currentScore;
     private HighScoreManager highScoreManager;
 
+    private string savePath;
+
     #endregion
 
     #region Unity methods
 
     private void Start()
     {
-        ProcessCurrentScore();
+        savePath = Application.dataPath + "/mySave.data";
 
+        ProcessCurrentScore();
+        highScoreDisplay.Reload();
         congratulationsText.gameObject.SetActive(false);
     }
 
     private void ProcessCurrentScore()
     {
-        highScoreManager = LevelManager.Instance.HighScoreManager;
+        ReadHighScoreData();
+        //highScoreManager = LevelManager.Instance.HighScoreManager;
         currentScore = LevelManager.Instance.CurrentScore;
 
         if (highScoreManager.IsNewHighScoreEntry(currentScore))
@@ -77,7 +84,50 @@ public class HighScoreProcessor : MonoBehaviour
             highScoreManager.RemoveLowestEntry();
         }
         highScoreManager.AddHighScoreEntry(nickname, currentScore);
+
+        WriteHighScoreData();
+        LevelManager.Instance.HighScoreManager = highScoreManager;
         highScoreDisplay.Reload();
+    }
+
+    private void ReadHighScoreData()
+    {
+        if (File.Exists(savePath))
+        {
+            FileStream stream = new FileStream(savePath, FileMode.Open);
+            BinaryFormatter binary = new BinaryFormatter();
+
+            if (stream.Length != 0)
+            {
+                highScoreManager = binary.Deserialize(stream) as HighScoreManager;
+            }
+            else
+            {
+                highScoreManager = new HighScoreManager();
+            }
+            stream.Close();
+        }
+        else
+        {
+            Debug.LogWarning("<color=yellow>Potential error. File on path doesn't exist: " + savePath + " </color>");
+            highScoreManager = new HighScoreManager();
+            FileStream stream = new FileStream(savePath, FileMode.Create);
+            BinaryFormatter binary = new BinaryFormatter();
+
+            binary.Serialize(stream, highScoreManager);
+            stream.Close();
+        }
+
+        LevelManager.Instance.HighScoreManager = highScoreManager;
+    }
+
+    private void WriteHighScoreData()
+    {
+        FileStream stream = new FileStream(savePath, FileMode.Create);
+        BinaryFormatter binary = new BinaryFormatter();
+        binary.Serialize(stream, highScoreManager);
+
+        stream.Close();
     }
     #endregion
 }

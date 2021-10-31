@@ -27,6 +27,7 @@ public class LevelManager : Singleton<LevelManager>
     public HighScoreManager HighScoreManager
     {
         get { return highScoreManager; }
+        set { highScoreManager = value; }
     }
 
     public int CurrentScore
