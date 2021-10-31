@@ -2412,3 +2412,4 @@ MonoBehaviour:
   confirmButton: {fileID: 8394543982435834416}
   highScoreDisplay: {fileID: 8394543982971120793}
   congratulationsText: {fileID: 8394543982920642790}
+  HighScoreScene: 1

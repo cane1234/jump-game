@@ -28,6 +28,8 @@ public class HighScoreProcessor : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI congratulationsText;
 
+    [SerializeField]
+    private bool HighScoreScene;
     #endregion
 
     #region Private Fields
@@ -46,7 +48,10 @@ public class HighScoreProcessor : MonoBehaviour
         savePath = Application.dataPath + "/mySave.data";
 
         ProcessCurrentScore();
-        highScoreDisplay.Reload();
+        if (HighScoreScene)
+        {
+            highScoreDisplay.Reload();
+        }
         congratulationsText.gameObject.SetActive(false);
     }
 
