@@ -72,6 +72,10 @@ public class HighScoreProcessor : MonoBehaviour
         congratulationsText.SetText("Congratulations " + nickname + "!");
         congratulationsText.gameObject.SetActive(true);
 
+        if (highScoreManager.HighScoreListFull())
+        {
+            highScoreManager.RemoveLowestEntry();
+        }
         highScoreManager.AddHighScoreEntry(nickname, currentScore);
         highScoreDisplay.Reload();
     }

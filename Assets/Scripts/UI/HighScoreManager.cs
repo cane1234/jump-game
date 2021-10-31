@@ -50,6 +50,19 @@ public class HighScoreManager
         highScoreList.Add(newEntry);
     }
 
+    public void RemoveLowestEntry()
+    {
+        if (highScoreList.Count > 1)
+        {
+            highScoreList.RemoveAt(highScoreList.Count - 1);
+        }
+    }
+                
+    public bool HighScoreListFull()
+    {
+        return highScoreList.Count == maxEntries;
+    }
+
     public List<HighScoreEntry> HighScores { get { return highScoreList; } }
 
     #endregion
