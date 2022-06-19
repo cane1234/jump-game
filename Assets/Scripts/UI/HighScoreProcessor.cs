@@ -48,17 +48,16 @@ public class HighScoreProcessor : MonoBehaviour
         savePath = Application.dataPath + "/mySave.data";
 
         ProcessCurrentScore();
-        if (HighScoreScene)
-        {
+        //if (HighScoreScene)
+        //{
             highScoreDisplay.Reload();
-        }
+        //}
         congratulationsText.gameObject.SetActive(false);
     }
 
     private void ProcessCurrentScore()
     {
         ReadHighScoreData();
-        //highScoreManager = LevelManager.Instance.HighScoreManager;
         currentScore = LevelManager.Instance.CurrentScore;
 
         if (highScoreManager.IsNewHighScoreEntry(currentScore))
