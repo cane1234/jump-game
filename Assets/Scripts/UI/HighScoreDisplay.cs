@@ -26,7 +26,7 @@ public class HighScoreDisplay : MonoBehaviour
 
     #endregion
 
-    private void Start()
+    private void Awake()
     {
         CreatedNicknameTexts = new List<TextMeshProUGUI>();
         CreatedScoreTexts = new List<TextMeshProUGUI>();
